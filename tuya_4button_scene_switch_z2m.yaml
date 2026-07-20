@@ -9,7 +9,6 @@ blueprint:
       selector:
         entity:
           integration: mqtt
-          domain: enddevice
     button_one_short_press:
       name: Single Press - Button 1
       description: Action to run on button 1 (lower-left) single press
