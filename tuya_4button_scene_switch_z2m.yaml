@@ -7,7 +7,7 @@ blueprint:
       name: Tuya 4-Button Scene Switch
       description: Tuya 4-Button Scene Switch to use
       selector:
-        entity:
+        device:
           integration: mqtt
     button_one_short_press:
       name: Single Press - Button 1
