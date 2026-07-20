@@ -86,42 +86,41 @@ blueprint:
 mode: restart
 max_exceeded: silent
 trigger:
-- platform: event
-  event_type: mqtt_event
-  event_data:
-    friendly_name: 'Commande Volet Salon'
+- platform: mqtt
+  topic: zigbee2mqtt/Commande Volet Salon
 action:
 - variables:
-    command: '{{ trigger.event.data.command }}'   
-    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    action_msg: '{{ trigger.payload_json.action | default("") }}'
+    button: '{{ action_msg.split("_")[0] | int(0) }}'
+    press_type: '{{ action_msg.split("_")[1] | default("") }}'
 - choose:
-  - conditions: "{{ command == 'remote_button_short_press' }}"
+  - conditions: "{{ press_type == 'single' }}"
     sequence:
     - choose:
-      - conditions: '{{ endpoint_id == 1 }}'
+      - conditions: '{{ button == 1 }}'
         sequence: !input 'button_one_single_press'
-      - conditions: '{{ endpoint_id == 2 }}'
+      - conditions: '{{ button == 2 }}'
         sequence: !input 'button_two_single_press'
-      - conditions: '{{ endpoint_id == 3 }}'
+      - conditions: '{{ button == 3 }}'
         sequence: !input 'button_three_single_press'
-      - conditions: '{{ endpoint_id == 4 }}'
+      - conditions: '{{ button == 4 }}'
         sequence: !input 'button_four_single_press'
-      - conditions: '{{ endpoint_id == 5 }}'
+      - conditions: '{{ button == 5 }}'
         sequence: !input 'button_five_single_press'
-      - conditions: '{{ endpoint_id == 6 }}'
+      - conditions: '{{ button == 6 }}'
         sequence: !input 'button_six_single_press'
-  - conditions: "{{ command == 'remote_button_double_press' }}"
+  - conditions: "{{ press_type == 'double' }}"
     sequence:
     - choose:
-      - conditions: '{{ endpoint_id == 1 }}'
+      - conditions: '{{ button == 1 }}'
         sequence: !input 'button_one_double_press'
-      - conditions: '{{ endpoint_id == 2 }}'
+      - conditions: '{{ button == 2 }}'
         sequence: !input 'button_two_double_press'
-      - conditions: '{{ endpoint_id == 3 }}'
+      - conditions: '{{ button == 3 }}'
         sequence: !input 'button_three_double_press'
-      - conditions: '{{ endpoint_id == 4 }}'
+      - conditions: '{{ button == 4 }}'
         sequence: !input 'button_four_double_press'
-      - conditions: '{{ endpoint_id == 5 }}'
+      - conditions: '{{ button == 5 }}'
         sequence: !input 'button_five_double_press'
-      - conditions: '{{ endpoint_id == 6 }}'
+      - conditions: '{{ button == 6 }}'
         sequence: !input 'button_six_double_press'
