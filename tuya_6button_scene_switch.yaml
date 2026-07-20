@@ -9,8 +9,6 @@ blueprint:
       selector:
         device:
           integration: mqtt
-          manufacturer: _TZ3000_iszegwpd
-          model: TS0046
     button_one_single_press:
       name: Appui simple
       description: Action à exécuter au premier appui du bouton 1
