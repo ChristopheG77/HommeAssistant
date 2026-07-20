@@ -1,0 +1,127 @@
+blueprint:
+  name: Zigbee2MQTT - Tuya 6-Button Scene Switch
+  description: Automatise ton interrupteur Tuya 6-boutons via Zigbee2MQTT/MQTT.
+  domain: automation
+  input:
+    tuya_6button_scene_switch:
+      name: Tuya 6-Button Scene Switch
+      description: Tuya 6-Button Scene Switch à utiliser
+      selector:
+        device:
+          integration: mqtt
+          manufacturer: _TZ3000_iszegwpd
+          model: TS0046
+    button_one_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 1
+      default: []
+      selector:
+        action: {}
+    button_one_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 1
+      default: []
+      selector:
+        action: {}
+    button_two_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 2
+      default: []
+      selector:
+        action: {}
+    button_two_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 2
+      default: []
+      selector:
+        action: {}
+    button_three_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 3
+      default: []
+      selector:
+        action: {}
+    button_three_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 3
+      default: []
+      selector:
+        action: {}
+    button_four_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 4
+      default: []
+      selector:
+        action: {}
+    button_four_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 4
+      default: []
+      selector:
+        action: {}
+    button_five_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 5
+      default: []
+      selector:
+        action: {}
+    button_five_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 5
+      default: []
+      selector:
+        action: {}
+    button_six_single_press:
+      name: Appui simple
+      description: Action à exécuter au premier appui du bouton 6
+      default: []
+      selector:
+        action: {}
+    button_six_double_press:
+      name: Double appui
+      description: Action à exécuter au double appui du bouton 6
+      default: []
+      selector:
+        action: {}
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: mqtt_event
+  event_data:
+    friendly_name: 'Commande Volet Salon'
+action:
+- variables:
+    command: '{{ trigger.event.data.command }}'   
+    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+- choose:
+  - conditions: "{{ command == 'remote_button_short_press' }}"
+    sequence:
+    - choose:
+      - conditions: '{{ endpoint_id == 1 }}'
+        sequence: !input 'button_one_single_press'
+      - conditions: '{{ endpoint_id == 2 }}'
+        sequence: !input 'button_two_single_press'
+      - conditions: '{{ endpoint_id == 3 }}'
+        sequence: !input 'button_three_single_press'
+      - conditions: '{{ endpoint_id == 4 }}'
+        sequence: !input 'button_four_single_press'
+      - conditions: '{{ endpoint_id == 5 }}'
+        sequence: !input 'button_five_single_press'
+      - conditions: '{{ endpoint_id == 6 }}'
+        sequence: !input 'button_six_single_press'
+  - conditions: "{{ command == 'remote_button_double_press' }}"
+    sequence:
+    - choose:
+      - conditions: '{{ endpoint_id == 1 }}'
+        sequence: !input 'button_one_double_press'
+      - conditions: '{{ endpoint_id == 2 }}'
+        sequence: !input 'button_two_double_press'
+      - conditions: '{{ endpoint_id == 3 }}'
+        sequence: !input 'button_three_double_press'
+      - conditions: '{{ endpoint_id == 4 }}'
+        sequence: !input 'button_four_double_press'
+      - conditions: '{{ endpoint_id == 5 }}'
+        sequence: !input 'button_five_double_press'
+      - conditions: '{{ endpoint_id == 6 }}'
+        sequence: !input 'button_six_double_press'
